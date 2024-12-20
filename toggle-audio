@@ -1,0 +1,34 @@
+#!/bin/bash
+
+# Enable error handling
+set -e
+
+# Get card information and find the Active Profile
+current_profile=$(pactl list cards | sed -n "/Card #46/,/Active Profile:/ p" | grep "Active Profile:" | sed 's/^[[:space:]]*Active Profile: //')
+
+# Debug output
+echo "Detected current profile: '$current_profile'"
+
+# Check if profile is empty
+if [ -z "$current_profile" ]; then
+    echo "Error: Could not detect current profile"
+    echo "Debug info:"
+    pactl list cards | grep -A50 "Card #46" | grep -A2 -B2 "Active Profile:"
+    exit 1
+fi
+
+# Toggle between profiles
+if [ "$current_profile" = "output:analog-stereo+input:analog-stereo" ]; then
+    echo "Switching from Duplex to Output..."
+    pactl set-card-profile 46 output:analog-stereo
+    echo "Switched to Analog Stereo Output"
+elif [ "$current_profile" = "output:analog-stereo" ]; then
+    echo "Switching from Output to Duplex..."
+    pactl set-card-profile 46 output:analog-stereo+input:analog-stereo
+    echo "Switched to Analog Stereo Duplex"
+else
+    echo "Error: Unexpected profile state: '$current_profile'"
+    echo "Debug info:"
+    pactl list cards | grep -A50 "Card #46" | grep -A2 -B2 "Active Profile:"
+    exit 1
+fi
