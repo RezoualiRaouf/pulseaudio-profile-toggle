@@ -19,7 +19,7 @@ sudo pacman -S pulseaudio pavucontrol
 
 1. Clone the repository:
 ```bash
-git clone https://github.com/yourusername/pulseaudio-profile-toggle.git
+git clone https://github.com/RezoualiRaouf/pulseaudio-profile-toggle.git
 ```
 
 2. Make the script executable:
