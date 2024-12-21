@@ -1,80 +1,2038 @@
-# PulseAudio Profile Toggle
+# Audio Profile Toggle Script
 
-A simple bash script to toggle between PulseAudio audio profiles. This script helps fix audio lag issues in Linux by switching between Analog Stereo Duplex and Analog Stereo Output profiles.
+A bash script to automatically toggle between audio output profiles (Duplex/Output) on system startup and reboot.
 
-## Problem it Solves
+## Features
 
-Sometimes in Linux, YouTube videos may lag when using certain audio profiles. This script provides a quick way to toggle between:
-- Analog Stereo Duplex
-- Analog Stereo Output
-
-## Prerequisites
-
-Make sure you have the following installed:
-```bash
-sudo pacman -S pulseaudio pavucontrol
-```
+- Toggle between Duplex and Output audio profiles
+- Enable/disable automatic toggling on system startup
+- Enable/disable automatic toggling on system reboot
+- Verification of profile changes
+- Detailed status messages and error handling
 
 ## Installation
 
 1. Clone the repository:
 ```bash
-git clone https://github.com/RezoualiRaouf/pulseaudio-profile-toggle.git
+git clone <repository-url>
+cd audio-profile-toggle
 ```
 
 2. Make the script executable:
 ```bash
-chmod +x toggle-audio
+chmod +x toggle-audio-profile.sh
 ```
 
-3. Move the script to your bin directory:
+3. (Optional) Move the script to a directory in your PATH:
 ```bash
-mv toggle-audio ~/bin/
+sudo cp toggle-audio-profile.sh /usr/local/bin/toggle-audio-profile
 ```
 
 ## Usage
 
-Just run the command from anywhere in your terminal:
+### Basic Usage
 ```bash
-toggle-audio
+./toggle-audio-profile.sh
+```
+This will toggle between Duplex and Output profiles once.
+
+### Enable Auto-toggle
+- For startup only:
+```bash
+./toggle-audio-profile.sh -s
 ```
 
-The script will:
-1. Detect your current audio profile
-2. Toggle between Analog Stereo Duplex and Analog Stereo Output
-3. Display the change it made
-
-## Output Example
-
+- For reboot only:
 ```bash
-Detected current profile: 'output:analog-stereo+input:analog-stereo'
-Switching from Duplex to Output...
-Switched to Analog Stereo Output
+./toggle-audio-profile.sh -r
+```
+
+- For both startup and reboot:
+```bash
+./toggle-audio-profile.sh -sr
+```
+
+### Disable Auto-toggle
+- For startup only:
+```bash
+./toggle-audio-profile.sh -es
+```
+
+- For reboot only:
+```bash
+./toggle-audio-profile.sh -er
+```
+
+- For both startup and reboot:
+```bash
+./toggle-audio-profile.sh -esr
+```
+
+### Help
+```bash
+./toggle-audio-profile.sh -h
 ```
 
 ## Troubleshooting
 
-If you encounter any issues:
+If the script isn't working as expected:
 
-1. Make sure PulseAudio is running:
+1. Check the systemd service status:
 ```bash
-pulseaudio --check
+systemctl --user status toggle-audio.service
 ```
 
-2. Check your sound card:
+2. Check the current audio profile:
 ```bash
-pactl list cards short
+pactl list cards | grep -A10 "Card #46"
 ```
 
-3. Verify PulseAudio profiles:
+3. Verify the autostart files:
 ```bash
-pactl list cards | grep -A50 "Active Profile:"
+ls -l ~/.config/systemd/user/toggle-audio.service
+ls -l ~/.config/autostart/toggle-audio.desktop
 ```
-
-## Contributing
-
-Feel free to open issues or submit pull requests if you have suggestions for improvements!
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+This project is licensed under the MIT License - see the LICENSE file for details.# Audio Profile Toggle Script
+
+A bash script to automatically toggle between audio output profiles (Duplex/Output) on system startup and reboot.
+
+## Features
+
+- Toggle between Duplex and Output audio profiles
+- Enable/disable automatic toggling on system startup
+- Enable/disable automatic toggling on system reboot
+- Verification of profile changes
+- Detailed status messages and error handling
+
+## Installation
+
+1. Clone the repository:
+```bash
+git clone <repository-url>
+cd audio-profile-toggle
+```
+
+2. Make the script executable:
+```bash
+chmod +x toggle-audio-profile.sh
+```
+
+3. (Optional) Move the script to a directory in your PATH:
+```bash
+sudo cp toggle-audio-profile.sh /usr/local/bin/toggle-audio-profile
+```
+
+## Usage
+
+### Basic Usage
+```bash
+./toggle-audio-profile.sh
+```
+This will toggle between Duplex and Output profiles once.
+
+### Enable Auto-toggle
+- For startup only:
+```bash
+./toggle-audio-profile.sh -s
+```
+
+- For reboot only:
+```bash
+./toggle-audio-profile.sh -r
+```
+
+- For both startup and reboot:
+```bash
+./toggle-audio-profile.sh -sr
+```
+
+### Disable Auto-toggle
+- For startup only:
+```bash
+./toggle-audio-profile.sh -es
+```
+
+- For reboot only:
+```bash
+./toggle-audio-profile.sh -er
+```
+
+- For both startup and reboot:
+```bash
+./toggle-audio-profile.sh -esr
+```
+
+### Help
+```bash
+./toggle-audio-profile.sh -h
+```
+
+## Troubleshooting
+
+If the script isn't working as expected:
+
+1. Check the systemd service status:
+```bash
+systemctl --user status toggle-audio.service
+```
+
+2. Check the current audio profile:
+```bash
+pactl list cards | grep -A10 "Card #46"
+```
+
+3. Verify the autostart files:
+```bash
+ls -l ~/.config/systemd/user/toggle-audio.service
+ls -l ~/.config/autostart/toggle-audio.desktop
+```
+
+## License
+
+This project is licensed under the MIT License - see the LICENSE file for details.# Audio Profile Toggle Script
+
+A bash script to automatically toggle between audio output profiles (Duplex/Output) on system startup and reboot.
+
+## Features
+
+- Toggle between Duplex and Output audio profiles
+- Enable/disable automatic toggling on system startup
+- Enable/disable automatic toggling on system reboot
+- Verification of profile changes
+- Detailed status messages and error handling
+
+## Installation
+
+1. Clone the repository:
+```bash
+git clone <repository-url>
+cd audio-profile-toggle
+```
+
+2. Make the script executable:
+```bash
+chmod +x toggle-audio-profile.sh
+```
+
+3. (Optional) Move the script to a directory in your PATH:
+```bash
+sudo cp toggle-audio-profile.sh /usr/local/bin/toggle-audio-profile
+```
+
+## Usage
+
+### Basic Usage
+```bash
+./toggle-audio-profile.sh
+```
+This will toggle between Duplex and Output profiles once.
+
+### Enable Auto-toggle
+- For startup only:
+```bash
+./toggle-audio-profile.sh -s
+```
+
+- For reboot only:
+```bash
+./toggle-audio-profile.sh -r
+```
+
+- For both startup and reboot:
+```bash
+./toggle-audio-profile.sh -sr
+```
+
+### Disable Auto-toggle
+- For startup only:
+```bash
+./toggle-audio-profile.sh -es
+```
+
+- For reboot only:
+```bash
+./toggle-audio-profile.sh -er
+```
+
+- For both startup and reboot:
+```bash
+./toggle-audio-profile.sh -esr
+```
+
+### Help
+```bash
+./toggle-audio-profile.sh -h
+```
+
+## Troubleshooting
+
+If the script isn't working as expected:
+
+1. Check the systemd service status:
+```bash
+systemctl --user status toggle-audio.service
+```
+
+2. Check the current audio profile:
+```bash
+pactl list cards | grep -A10 "Card #46"
+```
+
+3. Verify the autostart files:
+```bash
+ls -l ~/.config/systemd/user/toggle-audio.service
+ls -l ~/.config/autostart/toggle-audio.desktop
+```
+
+## License
+
+This project is licensed under the MIT License - see the LICENSE file for details.# Audio Profile Toggle Script
+
+A bash script to automatically toggle between audio output profiles (Duplex/Output) on system startup and reboot.
+
+## Features
+
+- Toggle between Duplex and Output audio profiles
+- Enable/disable automatic toggling on system startup
+- Enable/disable automatic toggling on system reboot
+- Verification of profile changes
+- Detailed status messages and error handling
+
+## Installation
+
+1. Clone the repository:
+```bash
+git clone <repository-url>
+cd audio-profile-toggle
+```
+
+2. Make the script executable:
+```bash
+chmod +x toggle-audio-profile.sh
+```
+
+3. (Optional) Move the script to a directory in your PATH:
+```bash
+sudo cp toggle-audio-profile.sh /usr/local/bin/toggle-audio-profile
+```
+
+## Usage
+
+### Basic Usage
+```bash
+./toggle-audio-profile.sh
+```
+This will toggle between Duplex and Output profiles once.
+
+### Enable Auto-toggle
+- For startup only:
+```bash
+./toggle-audio-profile.sh -s
+```
+
+- For reboot only:
+```bash
+./toggle-audio-profile.sh -r
+```
+
+- For both startup and reboot:
+```bash
+./toggle-audio-profile.sh -sr
+```
+
+### Disable Auto-toggle
+- For startup only:
+```bash
+./toggle-audio-profile.sh -es
+```
+
+- For reboot only:
+```bash
+./toggle-audio-profile.sh -er
+```
+
+- For both startup and reboot:
+```bash
+./toggle-audio-profile.sh -esr
+```
+
+### Help
+```bash
+./toggle-audio-profile.sh -h
+```
+
+## Troubleshooting
+
+If the script isn't working as expected:
+
+1. Check the systemd service status:
+```bash
+systemctl --user status toggle-audio.service
+```
+
+2. Check the current audio profile:
+```bash
+pactl list cards | grep -A10 "Card #46"
+```
+
+3. Verify the autostart files:
+```bash
+ls -l ~/.config/systemd/user/toggle-audio.service
+ls -l ~/.config/autostart/toggle-audio.desktop
+```
+
+## License
+
+This project is licensed under the MIT License - see the LICENSE file for details.# Audio Profile Toggle Script
+
+A bash script to automatically toggle between audio output profiles (Duplex/Output) on system startup and reboot.
+
+## Features
+
+- Toggle between Duplex and Output audio profiles
+- Enable/disable automatic toggling on system startup
+- Enable/disable automatic toggling on system reboot
+- Verification of profile changes
+- Detailed status messages and error handling
+
+## Installation
+
+1. Clone the repository:
+```bash
+git clone <repository-url>
+cd audio-profile-toggle
+```
+
+2. Make the script executable:
+```bash
+chmod +x toggle-audio-profile.sh
+```
+
+3. (Optional) Move the script to a directory in your PATH:
+```bash
+sudo cp toggle-audio-profile.sh /usr/local/bin/toggle-audio-profile
+```
+
+## Usage
+
+### Basic Usage
+```bash
+./toggle-audio-profile.sh
+```
+This will toggle between Duplex and Output profiles once.
+
+### Enable Auto-toggle
+- For startup only:
+```bash
+./toggle-audio-profile.sh -s
+```
+
+- For reboot only:
+```bash
+./toggle-audio-profile.sh -r
+```
+
+- For both startup and reboot:
+```bash
+./toggle-audio-profile.sh -sr
+```
+
+### Disable Auto-toggle
+- For startup only:
+```bash
+./toggle-audio-profile.sh -es
+```
+
+- For reboot only:
+```bash
+./toggle-audio-profile.sh -er
+```
+
+- For both startup and reboot:
+```bash
+./toggle-audio-profile.sh -esr
+```
+
+### Help
+```bash
+./toggle-audio-profile.sh -h
+```
+
+## Troubleshooting
+
+If the script isn't working as expected:
+
+1. Check the systemd service status:
+```bash
+systemctl --user status toggle-audio.service
+```
+
+2. Check the current audio profile:
+```bash
+pactl list cards | grep -A10 "Card #46"
+```
+
+3. Verify the autostart files:
+```bash
+ls -l ~/.config/systemd/user/toggle-audio.service
+ls -l ~/.config/autostart/toggle-audio.desktop
+```
+
+## License
+
+This project is licensed under the MIT License - see the LICENSE file for details.# Audio Profile Toggle Script
+
+A bash script to automatically toggle between audio output profiles (Duplex/Output) on system startup and reboot.
+
+## Features
+
+- Toggle between Duplex and Output audio profiles
+- Enable/disable automatic toggling on system startup
+- Enable/disable automatic toggling on system reboot
+- Verification of profile changes
+- Detailed status messages and error handling
+
+## Installation
+
+1. Clone the repository:
+```bash
+git clone <repository-url>
+cd audio-profile-toggle
+```
+
+2. Make the script executable:
+```bash
+chmod +x toggle-audio-profile.sh
+```
+
+3. (Optional) Move the script to a directory in your PATH:
+```bash
+sudo cp toggle-audio-profile.sh /usr/local/bin/toggle-audio-profile
+```
+
+## Usage
+
+### Basic Usage
+```bash
+./toggle-audio-profile.sh
+```
+This will toggle between Duplex and Output profiles once.
+
+### Enable Auto-toggle
+- For startup only:
+```bash
+./toggle-audio-profile.sh -s
+```
+
+- For reboot only:
+```bash
+./toggle-audio-profile.sh -r
+```
+
+- For both startup and reboot:
+```bash
+./toggle-audio-profile.sh -sr
+```
+
+### Disable Auto-toggle
+- For startup only:
+```bash
+./toggle-audio-profile.sh -es
+```
+
+- For reboot only:
+```bash
+./toggle-audio-profile.sh -er
+```
+
+- For both startup and reboot:
+```bash
+./toggle-audio-profile.sh -esr
+```
+
+### Help
+```bash
+./toggle-audio-profile.sh -h
+```
+
+## Troubleshooting
+
+If the script isn't working as expected:
+
+1. Check the systemd service status:
+```bash
+systemctl --user status toggle-audio.service
+```
+
+2. Check the current audio profile:
+```bash
+pactl list cards | grep -A10 "Card #46"
+```
+
+3. Verify the autostart files:
+```bash
+ls -l ~/.config/systemd/user/toggle-audio.service
+ls -l ~/.config/autostart/toggle-audio.desktop
+```
+
+## License
+
+This project is licensed under the MIT License - see the LICENSE file for details.# Audio Profile Toggle Script
+
+A bash script to automatically toggle between audio output profiles (Duplex/Output) on system startup and reboot.
+
+## Features
+
+- Toggle between Duplex and Output audio profiles
+- Enable/disable automatic toggling on system startup
+- Enable/disable automatic toggling on system reboot
+- Verification of profile changes
+- Detailed status messages and error handling
+
+## Installation
+
+1. Clone the repository:
+```bash
+git clone <repository-url>
+cd audio-profile-toggle
+```
+
+2. Make the script executable:
+```bash
+chmod +x toggle-audio-profile.sh
+```
+
+3. (Optional) Move the script to a directory in your PATH:
+```bash
+sudo cp toggle-audio-profile.sh /usr/local/bin/toggle-audio-profile
+```
+
+## Usage
+
+### Basic Usage
+```bash
+./toggle-audio-profile.sh
+```
+This will toggle between Duplex and Output profiles once.
+
+### Enable Auto-toggle
+- For startup only:
+```bash
+./toggle-audio-profile.sh -s
+```
+
+- For reboot only:
+```bash
+./toggle-audio-profile.sh -r
+```
+
+- For both startup and reboot:
+```bash
+./toggle-audio-profile.sh -sr
+```
+
+### Disable Auto-toggle
+- For startup only:
+```bash
+./toggle-audio-profile.sh -es
+```
+
+- For reboot only:
+```bash
+./toggle-audio-profile.sh -er
+```
+
+- For both startup and reboot:
+```bash
+./toggle-audio-profile.sh -esr
+```
+
+### Help
+```bash
+./toggle-audio-profile.sh -h
+```
+
+## Troubleshooting
+
+If the script isn't working as expected:
+
+1. Check the systemd service status:
+```bash
+systemctl --user status toggle-audio.service
+```
+
+2. Check the current audio profile:
+```bash
+pactl list cards | grep -A10 "Card #46"
+```
+
+3. Verify the autostart files:
+```bash
+ls -l ~/.config/systemd/user/toggle-audio.service
+ls -l ~/.config/autostart/toggle-audio.desktop
+```
+
+## License
+
+This project is licensed under the MIT License - see the LICENSE file for details.# Audio Profile Toggle Script
+
+A bash script to automatically toggle between audio output profiles (Duplex/Output) on system startup and reboot.
+
+## Features
+
+- Toggle between Duplex and Output audio profiles
+- Enable/disable automatic toggling on system startup
+- Enable/disable automatic toggling on system reboot
+- Verification of profile changes
+- Detailed status messages and error handling
+
+## Installation
+
+1. Clone the repository:
+```bash
+git clone <repository-url>
+cd audio-profile-toggle
+```
+
+2. Make the script executable:
+```bash
+chmod +x toggle-audio-profile.sh
+```
+
+3. (Optional) Move the script to a directory in your PATH:
+```bash
+sudo cp toggle-audio-profile.sh /usr/local/bin/toggle-audio-profile
+```
+
+## Usage
+
+### Basic Usage
+```bash
+./toggle-audio-profile.sh
+```
+This will toggle between Duplex and Output profiles once.
+
+### Enable Auto-toggle
+- For startup only:
+```bash
+./toggle-audio-profile.sh -s
+```
+
+- For reboot only:
+```bash
+./toggle-audio-profile.sh -r
+```
+
+- For both startup and reboot:
+```bash
+./toggle-audio-profile.sh -sr
+```
+
+### Disable Auto-toggle
+- For startup only:
+```bash
+./toggle-audio-profile.sh -es
+```
+
+- For reboot only:
+```bash
+./toggle-audio-profile.sh -er
+```
+
+- For both startup and reboot:
+```bash
+./toggle-audio-profile.sh -esr
+```
+
+### Help
+```bash
+./toggle-audio-profile.sh -h
+```
+
+## Troubleshooting
+
+If the script isn't working as expected:
+
+1. Check the systemd service status:
+```bash
+systemctl --user status toggle-audio.service
+```
+
+2. Check the current audio profile:
+```bash
+pactl list cards | grep -A10 "Card #46"
+```
+
+3. Verify the autostart files:
+```bash
+ls -l ~/.config/systemd/user/toggle-audio.service
+ls -l ~/.config/autostart/toggle-audio.desktop
+```
+
+## License
+
+This project is licensed under the MIT License - see the LICENSE file for details.# Audio Profile Toggle Script
+
+A bash script to automatically toggle between audio output profiles (Duplex/Output) on system startup and reboot.
+
+## Features
+
+- Toggle between Duplex and Output audio profiles
+- Enable/disable automatic toggling on system startup
+- Enable/disable automatic toggling on system reboot
+- Verification of profile changes
+- Detailed status messages and error handling
+
+## Installation
+
+1. Clone the repository:
+```bash
+git clone <repository-url>
+cd audio-profile-toggle
+```
+
+2. Make the script executable:
+```bash
+chmod +x toggle-audio-profile.sh
+```
+
+3. (Optional) Move the script to a directory in your PATH:
+```bash
+sudo cp toggle-audio-profile.sh /usr/local/bin/toggle-audio-profile
+```
+
+## Usage
+
+### Basic Usage
+```bash
+./toggle-audio-profile.sh
+```
+This will toggle between Duplex and Output profiles once.
+
+### Enable Auto-toggle
+- For startup only:
+```bash
+./toggle-audio-profile.sh -s
+```
+
+- For reboot only:
+```bash
+./toggle-audio-profile.sh -r
+```
+
+- For both startup and reboot:
+```bash
+./toggle-audio-profile.sh -sr
+```
+
+### Disable Auto-toggle
+- For startup only:
+```bash
+./toggle-audio-profile.sh -es
+```
+
+- For reboot only:
+```bash
+./toggle-audio-profile.sh -er
+```
+
+- For both startup and reboot:
+```bash
+./toggle-audio-profile.sh -esr
+```
+
+### Help
+```bash
+./toggle-audio-profile.sh -h
+```
+
+## Troubleshooting
+
+If the script isn't working as expected:
+
+1. Check the systemd service status:
+```bash
+systemctl --user status toggle-audio.service
+```
+
+2. Check the current audio profile:
+```bash
+pactl list cards | grep -A10 "Card #46"
+```
+
+3. Verify the autostart files:
+```bash
+ls -l ~/.config/systemd/user/toggle-audio.service
+ls -l ~/.config/autostart/toggle-audio.desktop
+```
+
+## License
+
+This project is licensed under the MIT License - see the LICENSE file for details.# Audio Profile Toggle Script
+
+A bash script to automatically toggle between audio output profiles (Duplex/Output) on system startup and reboot.
+
+## Features
+
+- Toggle between Duplex and Output audio profiles
+- Enable/disable automatic toggling on system startup
+- Enable/disable automatic toggling on system reboot
+- Verification of profile changes
+- Detailed status messages and error handling
+
+## Installation
+
+1. Clone the repository:
+```bash
+git clone <repository-url>
+cd audio-profile-toggle
+```
+
+2. Make the script executable:
+```bash
+chmod +x toggle-audio-profile.sh
+```
+
+3. (Optional) Move the script to a directory in your PATH:
+```bash
+sudo cp toggle-audio-profile.sh /usr/local/bin/toggle-audio-profile
+```
+
+## Usage
+
+### Basic Usage
+```bash
+./toggle-audio-profile.sh
+```
+This will toggle between Duplex and Output profiles once.
+
+### Enable Auto-toggle
+- For startup only:
+```bash
+./toggle-audio-profile.sh -s
+```
+
+- For reboot only:
+```bash
+./toggle-audio-profile.sh -r
+```
+
+- For both startup and reboot:
+```bash
+./toggle-audio-profile.sh -sr
+```
+
+### Disable Auto-toggle
+- For startup only:
+```bash
+./toggle-audio-profile.sh -es
+```
+
+- For reboot only:
+```bash
+./toggle-audio-profile.sh -er
+```
+
+- For both startup and reboot:
+```bash
+./toggle-audio-profile.sh -esr
+```
+
+### Help
+```bash
+./toggle-audio-profile.sh -h
+```
+
+## Troubleshooting
+
+If the script isn't working as expected:
+
+1. Check the systemd service status:
+```bash
+systemctl --user status toggle-audio.service
+```
+
+2. Check the current audio profile:
+```bash
+pactl list cards | grep -A10 "Card #46"
+```
+
+3. Verify the autostart files:
+```bash
+ls -l ~/.config/systemd/user/toggle-audio.service
+ls -l ~/.config/autostart/toggle-audio.desktop
+```
+
+## License
+
+This project is licensed under the MIT License - see the LICENSE file for details.# Audio Profile Toggle Script
+
+A bash script to automatically toggle between audio output profiles (Duplex/Output) on system startup and reboot.
+
+## Features
+
+- Toggle between Duplex and Output audio profiles
+- Enable/disable automatic toggling on system startup
+- Enable/disable automatic toggling on system reboot
+- Verification of profile changes
+- Detailed status messages and error handling
+
+## Installation
+
+1. Clone the repository:
+```bash
+git clone <repository-url>
+cd audio-profile-toggle
+```
+
+2. Make the script executable:
+```bash
+chmod +x toggle-audio-profile.sh
+```
+
+3. (Optional) Move the script to a directory in your PATH:
+```bash
+sudo cp toggle-audio-profile.sh /usr/local/bin/toggle-audio-profile
+```
+
+## Usage
+
+### Basic Usage
+```bash
+./toggle-audio-profile.sh
+```
+This will toggle between Duplex and Output profiles once.
+
+### Enable Auto-toggle
+- For startup only:
+```bash
+./toggle-audio-profile.sh -s
+```
+
+- For reboot only:
+```bash
+./toggle-audio-profile.sh -r
+```
+
+- For both startup and reboot:
+```bash
+./toggle-audio-profile.sh -sr
+```
+
+### Disable Auto-toggle
+- For startup only:
+```bash
+./toggle-audio-profile.sh -es
+```
+
+- For reboot only:
+```bash
+./toggle-audio-profile.sh -er
+```
+
+- For both startup and reboot:
+```bash
+./toggle-audio-profile.sh -esr
+```
+
+### Help
+```bash
+./toggle-audio-profile.sh -h
+```
+
+## Troubleshooting
+
+If the script isn't working as expected:
+
+1. Check the systemd service status:
+```bash
+systemctl --user status toggle-audio.service
+```
+
+2. Check the current audio profile:
+```bash
+pactl list cards | grep -A10 "Card #46"
+```
+
+3. Verify the autostart files:
+```bash
+ls -l ~/.config/systemd/user/toggle-audio.service
+ls -l ~/.config/autostart/toggle-audio.desktop
+```
+
+## License
+
+This project is licensed under the MIT License - see the LICENSE file for details.# Audio Profile Toggle Script
+
+A bash script to automatically toggle between audio output profiles (Duplex/Output) on system startup and reboot.
+
+## Features
+
+- Toggle between Duplex and Output audio profiles
+- Enable/disable automatic toggling on system startup
+- Enable/disable automatic toggling on system reboot
+- Verification of profile changes
+- Detailed status messages and error handling
+
+## Installation
+
+1. Clone the repository:
+```bash
+git clone <repository-url>
+cd audio-profile-toggle
+```
+
+2. Make the script executable:
+```bash
+chmod +x toggle-audio-profile.sh
+```
+
+3. (Optional) Move the script to a directory in your PATH:
+```bash
+sudo cp toggle-audio-profile.sh /usr/local/bin/toggle-audio-profile
+```
+
+## Usage
+
+### Basic Usage
+```bash
+./toggle-audio-profile.sh
+```
+This will toggle between Duplex and Output profiles once.
+
+### Enable Auto-toggle
+- For startup only:
+```bash
+./toggle-audio-profile.sh -s
+```
+
+- For reboot only:
+```bash
+./toggle-audio-profile.sh -r
+```
+
+- For both startup and reboot:
+```bash
+./toggle-audio-profile.sh -sr
+```
+
+### Disable Auto-toggle
+- For startup only:
+```bash
+./toggle-audio-profile.sh -es
+```
+
+- For reboot only:
+```bash
+./toggle-audio-profile.sh -er
+```
+
+- For both startup and reboot:
+```bash
+./toggle-audio-profile.sh -esr
+```
+
+### Help
+```bash
+./toggle-audio-profile.sh -h
+```
+
+## Troubleshooting
+
+If the script isn't working as expected:
+
+1. Check the systemd service status:
+```bash
+systemctl --user status toggle-audio.service
+```
+
+2. Check the current audio profile:
+```bash
+pactl list cards | grep -A10 "Card #46"
+```
+
+3. Verify the autostart files:
+```bash
+ls -l ~/.config/systemd/user/toggle-audio.service
+ls -l ~/.config/autostart/toggle-audio.desktop
+```
+
+## License
+
+This project is licensed under the MIT License - see the LICENSE file for details.# Audio Profile Toggle Script
+
+A bash script to automatically toggle between audio output profiles (Duplex/Output) on system startup and reboot.
+
+## Features
+
+- Toggle between Duplex and Output audio profiles
+- Enable/disable automatic toggling on system startup
+- Enable/disable automatic toggling on system reboot
+- Verification of profile changes
+- Detailed status messages and error handling
+
+## Installation
+
+1. Clone the repository:
+```bash
+git clone <repository-url>
+cd audio-profile-toggle
+```
+
+2. Make the script executable:
+```bash
+chmod +x toggle-audio-profile.sh
+```
+
+3. (Optional) Move the script to a directory in your PATH:
+```bash
+sudo cp toggle-audio-profile.sh /usr/local/bin/toggle-audio-profile
+```
+
+## Usage
+
+### Basic Usage
+```bash
+./toggle-audio-profile.sh
+```
+This will toggle between Duplex and Output profiles once.
+
+### Enable Auto-toggle
+- For startup only:
+```bash
+./toggle-audio-profile.sh -s
+```
+
+- For reboot only:
+```bash
+./toggle-audio-profile.sh -r
+```
+
+- For both startup and reboot:
+```bash
+./toggle-audio-profile.sh -sr
+```
+
+### Disable Auto-toggle
+- For startup only:
+```bash
+./toggle-audio-profile.sh -es
+```
+
+- For reboot only:
+```bash
+./toggle-audio-profile.sh -er
+```
+
+- For both startup and reboot:
+```bash
+./toggle-audio-profile.sh -esr
+```
+
+### Help
+```bash
+./toggle-audio-profile.sh -h
+```
+
+## Troubleshooting
+
+If the script isn't working as expected:
+
+1. Check the systemd service status:
+```bash
+systemctl --user status toggle-audio.service
+```
+
+2. Check the current audio profile:
+```bash
+pactl list cards | grep -A10 "Card #46"
+```
+
+3. Verify the autostart files:
+```bash
+ls -l ~/.config/systemd/user/toggle-audio.service
+ls -l ~/.config/autostart/toggle-audio.desktop
+```
+
+## License
+
+This project is licensed under the MIT License - see the LICENSE file for details.# Audio Profile Toggle Script
+
+A bash script to automatically toggle between audio output profiles (Duplex/Output) on system startup and reboot.
+
+## Features
+
+- Toggle between Duplex and Output audio profiles
+- Enable/disable automatic toggling on system startup
+- Enable/disable automatic toggling on system reboot
+- Verification of profile changes
+- Detailed status messages and error handling
+
+## Installation
+
+1. Clone the repository:
+```bash
+git clone <repository-url>
+cd audio-profile-toggle
+```
+
+2. Make the script executable:
+```bash
+chmod +x toggle-audio-profile.sh
+```
+
+3. (Optional) Move the script to a directory in your PATH:
+```bash
+sudo cp toggle-audio-profile.sh /usr/local/bin/toggle-audio-profile
+```
+
+## Usage
+
+### Basic Usage
+```bash
+./toggle-audio-profile.sh
+```
+This will toggle between Duplex and Output profiles once.
+
+### Enable Auto-toggle
+- For startup only:
+```bash
+./toggle-audio-profile.sh -s
+```
+
+- For reboot only:
+```bash
+./toggle-audio-profile.sh -r
+```
+
+- For both startup and reboot:
+```bash
+./toggle-audio-profile.sh -sr
+```
+
+### Disable Auto-toggle
+- For startup only:
+```bash
+./toggle-audio-profile.sh -es
+```
+
+- For reboot only:
+```bash
+./toggle-audio-profile.sh -er
+```
+
+- For both startup and reboot:
+```bash
+./toggle-audio-profile.sh -esr
+```
+
+### Help
+```bash
+./toggle-audio-profile.sh -h
+```
+
+## Troubleshooting
+
+If the script isn't working as expected:
+
+1. Check the systemd service status:
+```bash
+systemctl --user status toggle-audio.service
+```
+
+2. Check the current audio profile:
+```bash
+pactl list cards | grep -A10 "Card #46"
+```
+
+3. Verify the autostart files:
+```bash
+ls -l ~/.config/systemd/user/toggle-audio.service
+ls -l ~/.config/autostart/toggle-audio.desktop
+```
+
+## License
+
+This project is licensed under the MIT License - see the LICENSE file for details.# Audio Profile Toggle Script
+
+A bash script to automatically toggle between audio output profiles (Duplex/Output) on system startup and reboot.
+
+## Features
+
+- Toggle between Duplex and Output audio profiles
+- Enable/disable automatic toggling on system startup
+- Enable/disable automatic toggling on system reboot
+- Verification of profile changes
+- Detailed status messages and error handling
+
+## Installation
+
+1. Clone the repository:
+```bash
+git clone <repository-url>
+cd audio-profile-toggle
+```
+
+2. Make the script executable:
+```bash
+chmod +x toggle-audio-profile.sh
+```
+
+3. (Optional) Move the script to a directory in your PATH:
+```bash
+sudo cp toggle-audio-profile.sh /usr/local/bin/toggle-audio-profile
+```
+
+## Usage
+
+### Basic Usage
+```bash
+./toggle-audio-profile.sh
+```
+This will toggle between Duplex and Output profiles once.
+
+### Enable Auto-toggle
+- For startup only:
+```bash
+./toggle-audio-profile.sh -s
+```
+
+- For reboot only:
+```bash
+./toggle-audio-profile.sh -r
+```
+
+- For both startup and reboot:
+```bash
+./toggle-audio-profile.sh -sr
+```
+
+### Disable Auto-toggle
+- For startup only:
+```bash
+./toggle-audio-profile.sh -es
+```
+
+- For reboot only:
+```bash
+./toggle-audio-profile.sh -er
+```
+
+- For both startup and reboot:
+```bash
+./toggle-audio-profile.sh -esr
+```
+
+### Help
+```bash
+./toggle-audio-profile.sh -h
+```
+
+## Troubleshooting
+
+If the script isn't working as expected:
+
+1. Check the systemd service status:
+```bash
+systemctl --user status toggle-audio.service
+```
+
+2. Check the current audio profile:
+```bash
+pactl list cards | grep -A10 "Card #46"
+```
+
+3. Verify the autostart files:
+```bash
+ls -l ~/.config/systemd/user/toggle-audio.service
+ls -l ~/.config/autostart/toggle-audio.desktop
+```
+
+## License
+
+This project is licensed under the MIT License - see the LICENSE file for details.# Audio Profile Toggle Script
+
+A bash script to automatically toggle between audio output profiles (Duplex/Output) on system startup and reboot.
+
+## Features
+
+- Toggle between Duplex and Output audio profiles
+- Enable/disable automatic toggling on system startup
+- Enable/disable automatic toggling on system reboot
+- Verification of profile changes
+- Detailed status messages and error handling
+
+## Installation
+
+1. Clone the repository:
+```bash
+git clone <repository-url>
+cd audio-profile-toggle
+```
+
+2. Make the script executable:
+```bash
+chmod +x toggle-audio-profile.sh
+```
+
+3. (Optional) Move the script to a directory in your PATH:
+```bash
+sudo cp toggle-audio-profile.sh /usr/local/bin/toggle-audio-profile
+```
+
+## Usage
+
+### Basic Usage
+```bash
+./toggle-audio-profile.sh
+```
+This will toggle between Duplex and Output profiles once.
+
+### Enable Auto-toggle
+- For startup only:
+```bash
+./toggle-audio-profile.sh -s
+```
+
+- For reboot only:
+```bash
+./toggle-audio-profile.sh -r
+```
+
+- For both startup and reboot:
+```bash
+./toggle-audio-profile.sh -sr
+```
+
+### Disable Auto-toggle
+- For startup only:
+```bash
+./toggle-audio-profile.sh -es
+```
+
+- For reboot only:
+```bash
+./toggle-audio-profile.sh -er
+```
+
+- For both startup and reboot:
+```bash
+./toggle-audio-profile.sh -esr
+```
+
+### Help
+```bash
+./toggle-audio-profile.sh -h
+```
+
+## Troubleshooting
+
+If the script isn't working as expected:
+
+1. Check the systemd service status:
+```bash
+systemctl --user status toggle-audio.service
+```
+
+2. Check the current audio profile:
+```bash
+pactl list cards | grep -A10 "Card #46"
+```
+
+3. Verify the autostart files:
+```bash
+ls -l ~/.config/systemd/user/toggle-audio.service
+ls -l ~/.config/autostart/toggle-audio.desktop
+```
+
+## License
+
+This project is licensed under the MIT License - see the LICENSE file for details.# Audio Profile Toggle Script
+
+A bash script to automatically toggle between audio output profiles (Duplex/Output) on system startup and reboot.
+
+## Features
+
+- Toggle between Duplex and Output audio profiles
+- Enable/disable automatic toggling on system startup
+- Enable/disable automatic toggling on system reboot
+- Verification of profile changes
+- Detailed status messages and error handling
+
+## Installation
+
+1. Clone the repository:
+```bash
+git clone <repository-url>
+cd audio-profile-toggle
+```
+
+2. Make the script executable:
+```bash
+chmod +x toggle-audio-profile.sh
+```
+
+3. (Optional) Move the script to a directory in your PATH:
+```bash
+sudo cp toggle-audio-profile.sh /usr/local/bin/toggle-audio-profile
+```
+
+## Usage
+
+### Basic Usage
+```bash
+./toggle-audio-profile.sh
+```
+This will toggle between Duplex and Output profiles once.
+
+### Enable Auto-toggle
+- For startup only:
+```bash
+./toggle-audio-profile.sh -s
+```
+
+- For reboot only:
+```bash
+./toggle-audio-profile.sh -r
+```
+
+- For both startup and reboot:
+```bash
+./toggle-audio-profile.sh -sr
+```
+
+### Disable Auto-toggle
+- For startup only:
+```bash
+./toggle-audio-profile.sh -es
+```
+
+- For reboot only:
+```bash
+./toggle-audio-profile.sh -er
+```
+
+- For both startup and reboot:
+```bash
+./toggle-audio-profile.sh -esr
+```
+
+### Help
+```bash
+./toggle-audio-profile.sh -h
+```
+
+## Troubleshooting
+
+If the script isn't working as expected:
+
+1. Check the systemd service status:
+```bash
+systemctl --user status toggle-audio.service
+```
+
+2. Check the current audio profile:
+```bash
+pactl list cards | grep -A10 "Card #46"
+```
+
+3. Verify the autostart files:
+```bash
+ls -l ~/.config/systemd/user/toggle-audio.service
+ls -l ~/.config/autostart/toggle-audio.desktop
+```
+
+## License
+
+This project is licensed under the MIT License - see the LICENSE file for details.# Audio Profile Toggle Script
+
+A bash script to automatically toggle between audio output profiles (Duplex/Output) on system startup and reboot.
+
+## Features
+
+- Toggle between Duplex and Output audio profiles
+- Enable/disable automatic toggling on system startup
+- Enable/disable automatic toggling on system reboot
+- Verification of profile changes
+- Detailed status messages and error handling
+
+## Installation
+
+1. Clone the repository:
+```bash
+git clone <repository-url>
+cd audio-profile-toggle
+```
+
+2. Make the script executable:
+```bash
+chmod +x toggle-audio-profile.sh
+```
+
+3. (Optional) Move the script to a directory in your PATH:
+```bash
+sudo cp toggle-audio-profile.sh /usr/local/bin/toggle-audio-profile
+```
+
+## Usage
+
+### Basic Usage
+```bash
+./toggle-audio-profile.sh
+```
+This will toggle between Duplex and Output profiles once.
+
+### Enable Auto-toggle
+- For startup only:
+```bash
+./toggle-audio-profile.sh -s
+```
+
+- For reboot only:
+```bash
+./toggle-audio-profile.sh -r
+```
+
+- For both startup and reboot:
+```bash
+./toggle-audio-profile.sh -sr
+```
+
+### Disable Auto-toggle
+- For startup only:
+```bash
+./toggle-audio-profile.sh -es
+```
+
+- For reboot only:
+```bash
+./toggle-audio-profile.sh -er
+```
+
+- For both startup and reboot:
+```bash
+./toggle-audio-profile.sh -esr
+```
+
+### Help
+```bash
+./toggle-audio-profile.sh -h
+```
+
+## Troubleshooting
+
+If the script isn't working as expected:
+
+1. Check the systemd service status:
+```bash
+systemctl --user status toggle-audio.service
+```
+
+2. Check the current audio profile:
+```bash
+pactl list cards | grep -A10 "Card #46"
+```
+
+3. Verify the autostart files:
+```bash
+ls -l ~/.config/systemd/user/toggle-audio.service
+ls -l ~/.config/autostart/toggle-audio.desktop
+```
+
+## License
+
+This project is licensed under the MIT License - see the LICENSE file for details.# Audio Profile Toggle Script
+
+A bash script to automatically toggle between audio output profiles (Duplex/Output) on system startup and reboot.
+
+## Features
+
+- Toggle between Duplex and Output audio profiles
+- Enable/disable automatic toggling on system startup
+- Enable/disable automatic toggling on system reboot
+- Verification of profile changes
+- Detailed status messages and error handling
+
+## Installation
+
+1. Clone the repository:
+```bash
+git clone <repository-url>
+cd audio-profile-toggle
+```
+
+2. Make the script executable:
+```bash
+chmod +x toggle-audio-profile.sh
+```
+
+3. (Optional) Move the script to a directory in your PATH:
+```bash
+sudo cp toggle-audio-profile.sh /usr/local/bin/toggle-audio-profile
+```
+
+## Usage
+
+### Basic Usage
+```bash
+./toggle-audio-profile.sh
+```
+This will toggle between Duplex and Output profiles once.
+
+### Enable Auto-toggle
+- For startup only:
+```bash
+./toggle-audio-profile.sh -s
+```
+
+- For reboot only:
+```bash
+./toggle-audio-profile.sh -r
+```
+
+- For both startup and reboot:
+```bash
+./toggle-audio-profile.sh -sr
+```
+
+### Disable Auto-toggle
+- For startup only:
+```bash
+./toggle-audio-profile.sh -es
+```
+
+- For reboot only:
+```bash
+./toggle-audio-profile.sh -er
+```
+
+- For both startup and reboot:
+```bash
+./toggle-audio-profile.sh -esr
+```
+
+### Help
+```bash
+./toggle-audio-profile.sh -h
+```
+
+## Troubleshooting
+
+If the script isn't working as expected:
+
+1. Check the systemd service status:
+```bash
+systemctl --user status toggle-audio.service
+```
+
+2. Check the current audio profile:
+```bash
+pactl list cards | grep -A10 "Card #46"
+```
+
+3. Verify the autostart files:
+```bash
+ls -l ~/.config/systemd/user/toggle-audio.service
+ls -l ~/.config/autostart/toggle-audio.desktop
+```
+
+## License
+
+This project is licensed under the MIT License - see the LICENSE file for details.# Audio Profile Toggle Script
+
+A bash script to automatically toggle between audio output profiles (Duplex/Output) on system startup and reboot.
+
+## Features
+
+- Toggle between Duplex and Output audio profiles
+- Enable/disable automatic toggling on system startup
+- Enable/disable automatic toggling on system reboot
+- Verification of profile changes
+- Detailed status messages and error handling
+
+## Installation
+
+1. Clone the repository:
+```bash
+git clone <repository-url>
+cd audio-profile-toggle
+```
+
+2. Make the script executable:
+```bash
+chmod +x toggle-audio-profile.sh
+```
+
+3. (Optional) Move the script to a directory in your PATH:
+```bash
+sudo cp toggle-audio-profile.sh /usr/local/bin/toggle-audio-profile
+```
+
+## Usage
+
+### Basic Usage
+```bash
+./toggle-audio-profile.sh
+```
+This will toggle between Duplex and Output profiles once.
+
+### Enable Auto-toggle
+- For startup only:
+```bash
+./toggle-audio-profile.sh -s
+```
+
+- For reboot only:
+```bash
+./toggle-audio-profile.sh -r
+```
+
+- For both startup and reboot:
+```bash
+./toggle-audio-profile.sh -sr
+```
+
+### Disable Auto-toggle
+- For startup only:
+```bash
+./toggle-audio-profile.sh -es
+```
+
+- For reboot only:
+```bash
+./toggle-audio-profile.sh -er
+```
+
+- For both startup and reboot:
+```bash
+./toggle-audio-profile.sh -esr
+```
+
+### Help
+```bash
+./toggle-audio-profile.sh -h
+```
+
+## Troubleshooting
+
+If the script isn't working as expected:
+
+1. Check the systemd service status:
+```bash
+systemctl --user status toggle-audio.service
+```
+
+2. Check the current audio profile:
+```bash
+pactl list cards | grep -A10 "Card #46"
+```
+
+3. Verify the autostart files:
+```bash
+ls -l ~/.config/systemd/user/toggle-audio.service
+ls -l ~/.config/autostart/toggle-audio.desktop
+```
+
+## License
+
+This project is licensed under the MIT License - see the LICENSE file for details.# Audio Profile Toggle Script
+
+A bash script to automatically toggle between audio output profiles (Duplex/Output) on system startup and reboot.
+
+## Features
+
+- Toggle between Duplex and Output audio profiles
+- Enable/disable automatic toggling on system startup
+- Enable/disable automatic toggling on system reboot
+- Verification of profile changes
+- Detailed status messages and error handling
+
+## Installation
+
+1. Clone the repository:
+```bash
+git clone <repository-url>
+cd audio-profile-toggle
+```
+
+2. Make the script executable:
+```bash
+chmod +x toggle-audio-profile.sh
+```
+
+3. (Optional) Move the script to a directory in your PATH:
+```bash
+sudo cp toggle-audio-profile.sh /usr/local/bin/toggle-audio-profile
+```
+
+## Usage
+
+### Basic Usage
+```bash
+./toggle-audio-profile.sh
+```
+This will toggle between Duplex and Output profiles once.
+
+### Enable Auto-toggle
+- For startup only:
+```bash
+./toggle-audio-profile.sh -s
+```
+
+- For reboot only:
+```bash
+./toggle-audio-profile.sh -r
+```
+
+- For both startup and reboot:
+```bash
+./toggle-audio-profile.sh -sr
+```
+
+### Disable Auto-toggle
+- For startup only:
+```bash
+./toggle-audio-profile.sh -es
+```
+
+- For reboot only:
+```bash
+./toggle-audio-profile.sh -er
+```
+
+- For both startup and reboot:
+```bash
+./toggle-audio-profile.sh -esr
+```
+
+### Help
+```bash
+./toggle-audio-profile.sh -h
+```
+
+## Troubleshooting
+
+If the script isn't working as expected:
+
+1. Check the systemd service status:
+```bash
+systemctl --user status toggle-audio.service
+```
+
+2. Check the current audio profile:
+```bash
+pactl list cards | grep -A10 "Card #46"
+```
+
+3. Verify the autostart files:
+```bash
+ls -l ~/.config/systemd/user/toggle-audio.service
+ls -l ~/.config/autostart/toggle-audio.desktop
+```
+
+## License
+
+This project is licensed under the MIT License - see the LICENSE file for details.
