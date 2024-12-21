@@ -1,16 +1,17 @@
 # System files
 .DS_Store
-*~
-*.swp
-.directory
+Thumbs.db
 
-# IDE and editor files
-.idea/
+# Editor files
+*.swp
+*.swo
+*~
 .vscode/
-*.sublime-*
+.idea/
 
 # Logs
 *.log
 
 # Backup files
 *.bak
+*backup*
