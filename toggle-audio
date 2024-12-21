@@ -1,34 +1,240 @@
 #!/bin/bash
 
-# Enable error handling
-set -e
+# Get the actual script path and name
+SCRIPT_PATH=$(realpath "$0")
 
-# Get card information and find the Active Profile
-current_profile=$(pactl list cards | sed -n "/Card #46/,/Active Profile:/ p" | grep "Active Profile:" | sed 's/^[[:space:]]*Active Profile: //')
+# Function to print usage
+print_usage() {
+    echo "Usage: $(basename "$0") [-s|-r|-sr|-rs|-es|-er|-esr|-ers|-status]"
+    echo "Options:"
+    echo "  -s      Enable auto-toggle on system startup"
+    echo "  -r      Enable auto-toggle on system reboot"
+    echo "  -sr     Enable auto-toggle on both startup and reboot"
+    echo "  -rs     Enable auto-toggle on both startup and reboot"
+    echo "  -es     Disable auto-toggle on system startup"
+    echo "  -er     Disable auto-toggle on system reboot"
+    echo "  -esr    Disable auto-toggle on both startup and reboot"
+    echo "  -ers    Disable auto-toggle on both startup and reboot"
+    echo "  -status Show current audio profile and auto-toggle status"
+    echo "  -h      Display this help message"
+    echo "No flags: Toggle audio profile once"
+}
 
-# Debug output
-echo "Detected current profile: '$current_profile'"
+# Function to get current profile
+get_current_profile() {
+    pactl list cards | sed -n "/Card #46/,/Active Profile:/ p" | grep "Active Profile:" | sed 's/^[[:space:]]*Active Profile: //'
+}
 
-# Check if profile is empty
-if [ -z "$current_profile" ]; then
-    echo "Error: Could not detect current profile"
-    echo "Debug info:"
-    pactl list cards | grep -A50 "Card #46" | grep -A2 -B2 "Active Profile:"
-    exit 1
-fi
+# Function to check auto-toggle status
+check_status() {
+    echo "Current Audio Profile Status:"
+    echo "--------------------------"
+    
+    # Get current audio profile
+    current_profile=$(get_current_profile)
+    echo "Current Profile: $current_profile"
+    
+    # Check startup status
+    echo -n "Startup Auto-toggle: "
+    if [ -f ~/.config/systemd/user/toggle-audio.service ]; then
+        if systemctl --user is-enabled toggle-audio.service &>/dev/null; then
+            echo "Enabled"
+        else
+            echo "Disabled"
+        fi
+    else
+        echo "Not configured"
+    fi
+    
+    # Check reboot status
+    echo -n "Reboot Auto-toggle: "
+    if [ -f ~/.config/autostart/toggle-audio.desktop ]; then
+        if grep -q "X-GNOME-Autostart-enabled=true" ~/.config/autostart/toggle-audio.desktop; then
+            echo "Enabled"
+        else
+            echo "Disabled"
+        fi
+    else
+        echo "Not configured"
+    fi
+}
 
-# Toggle between profiles
-if [ "$current_profile" = "output:analog-stereo+input:analog-stereo" ]; then
-    echo "Switching from Duplex to Output..."
-    pactl set-card-profile 46 output:analog-stereo
-    echo "Switched to Analog Stereo Output"
-elif [ "$current_profile" = "output:analog-stereo" ]; then
-    echo "Switching from Output to Duplex..."
-    pactl set-card-profile 46 output:analog-stereo+input:analog-stereo
-    echo "Switched to Analog Stereo Duplex"
-else
-    echo "Error: Unexpected profile state: '$current_profile'"
-    echo "Debug info:"
-    pactl list cards | grep -A50 "Card #46" | grep -A2 -B2 "Active Profile:"
-    exit 1
-fi
+# Function to toggle audio profile
+toggle_audio() {
+    # Get the current profile
+    current_profile=$(get_current_profile)
+    echo "Detected current profile: '$current_profile'"
+
+    if [ -z "$current_profile" ]; then
+        echo "Error: Could not detect current profile"
+        echo "Debug info:"
+        pactl list cards | grep -A50 "Card #46" | grep -A2 -B2 "Active Profile:"
+        exit 1
+    fi
+
+    # Force profile change
+    if [ "$current_profile" = "output:analog-stereo+input:analog-stereo" ]; then
+        echo "Switching from Duplex to Output..."
+        pactl set-card-profile 46 output:analog-stereo
+        # Verify the change
+        new_profile=$(get_current_profile)
+        if [ "$new_profile" = "output:analog-stereo" ]; then
+            echo "Successfully switched to Analog Stereo Output"
+        else
+            echo "Error: Failed to switch profile"
+            exit 1
+        fi
+    elif [ "$current_profile" = "output:analog-stereo" ]; then
+        echo "Switching from Output to Duplex..."
+        pactl set-card-profile 46 output:analog-stereo+input:analog-stereo
+        # Verify the change
+        new_profile=$(get_current_profile)
+        if [ "$new_profile" = "output:analog-stereo+input:analog-stereo" ]; then
+            echo "Successfully switched to Analog Stereo Duplex"
+        else
+            echo "Error: Failed to switch profile"
+            exit 1
+        fi
+    else
+        echo "Error: Unexpected profile state: '$current_profile'"
+        exit 1
+    fi
+}
+
+# Function to setup autostart
+setup_autostart() {
+    mkdir -p ~/.config/systemd/user/
+    
+    # Create systemd service file
+    cat > ~/.config/systemd/user/toggle-audio.service << EOL
+[Unit]
+Description=Toggle Audio Profile Service
+After=pulseaudio.service pipewire-pulse.service sound.target
+Wants=pulseaudio.service pipewire-pulse.service
+StartLimitIntervalSec=0
+
+[Service]
+Type=oneshot
+ExecStartPre=/bin/sleep 3
+ExecStart=${SCRIPT_PATH}
+RemainAfterExit=yes
+
+[Install]
+WantedBy=default.target
+EOL
+    systemctl --user daemon-reload
+    systemctl --user enable toggle-audio.service
+    
+    # Verify service status
+    if systemctl --user is-enabled toggle-audio.service > /dev/null 2>&1; then
+        echo "Startup auto-toggle enabled successfully"
+    else
+        echo "Error: Failed to enable startup auto-toggle"
+        exit 1
+    fi
+}
+
+# Function to setup reboot autostart
+setup_reboot() {
+    mkdir -p ~/.config/autostart/
+    
+    # Create desktop entry for reboot
+    cat > ~/.config/autostart/toggle-audio.desktop << EOL
+[Desktop Entry]
+Type=Application
+Name=Toggle Audio Profile
+Exec=/bin/bash -c "sleep 3 && ${SCRIPT_PATH}"
+X-GNOME-Autostart-enabled=true
+Terminal=false
+NoDisplay=true
+EOL
+    
+    chmod +x ~/.config/autostart/toggle-audio.desktop
+    
+    # Verify the desktop entry
+    if [ -x ~/.config/autostart/toggle-audio.desktop ] && grep -q "X-GNOME-Autostart-enabled=true" ~/.config/autostart/toggle-audio.desktop; then
+        echo "Reboot auto-toggle enabled successfully"
+    else
+        echo "Error: Failed to enable reboot auto-toggle"
+        exit 1
+    fi
+}
+
+# Function to disable startup autostart
+disable_startup() {
+    if [ -f ~/.config/systemd/user/toggle-audio.service ]; then
+        if systemctl --user is-enabled toggle-audio.service > /dev/null 2>&1; then
+            systemctl --user disable toggle-audio.service
+            systemctl --user daemon-reload
+            echo "Auto-toggle disabled for startup"
+        else
+            echo "Startup auto-toggle was already disabled"
+        fi
+    else
+        echo "Startup auto-toggle was not enabled"
+    fi
+}
+
+# Function to disable reboot autostart
+disable_reboot() {
+    if [ -f ~/.config/autostart/toggle-audio.desktop ]; then
+        if grep -q "X-GNOME-Autostart-enabled=true" ~/.config/autostart/toggle-audio.desktop; then
+            sed -i 's/X-GNOME-Autostart-enabled=true/X-GNOME-Autostart-enabled=false/' ~/.config/autostart/toggle-audio.desktop
+            echo "Auto-toggle disabled for reboot"
+        else
+            echo "Reboot auto-toggle was already disabled"
+        fi
+    else
+        echo "Reboot auto-toggle was not enabled"
+    fi
+}
+
+# Handle command line arguments
+case "$1" in
+    -s)
+        setup_autostart
+        exit 0
+        ;;
+    -r)
+        setup_reboot
+        exit 0
+        ;;
+    -sr|-rs)
+        setup_autostart
+        setup_reboot
+        echo "Auto-toggle enabled for both startup and reboot"
+        exit 0
+        ;;
+    -es)
+        disable_startup
+        exit 0
+        ;;
+    -er)
+        disable_reboot
+        exit 0
+        ;;
+    -esr|-ers)
+        disable_startup
+        disable_reboot
+        echo "Auto-toggle disabled for both startup and reboot"
+        exit 0
+        ;;
+    -status)
+        check_status
+        exit 0
+        ;;
+    -h|--help)
+        print_usage
+        exit 0
+        ;;
+    *)
+        if [ ! -z "$1" ]; then
+            echo "Unknown option: $1"
+            print_usage
+            exit 1
+        fi
+        ;;
+esac
+
+# If no flags are provided, just toggle the audio
+toggle_audio
